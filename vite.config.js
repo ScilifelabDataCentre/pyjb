@@ -9,12 +9,16 @@ export default defineConfig({
 	    formats: ["es"],
 	},
 	rollupOptions: {
+	    // ipywidget expects a self-contained ESM file, we cannot
+	    // rely relative imports.
 	    output: {
 		manualChunks: () => 'vendor'
 	    }
 	},
     },
     define: {
-	    'process.env': {}
+	// Necessary to avoid failing accesses to `process.env` in the
+	// output bundle.
+	'process.env': {}
     }
 });
