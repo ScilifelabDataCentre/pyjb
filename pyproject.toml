@@ -9,7 +9,10 @@ dependencies = ["anywidget", "traitlets"]
 readme = "README.md"
 
 [project.optional-dependencies]
-dev = ["jupyter"]
+dev = [
+    "jupyter",
+    "watchfiles"
+]
 
 [tool.setuptools]
 packages  = ["pyjb"]
