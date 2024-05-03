@@ -5,8 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pyjb"
 version = "0.0.1"
-dependencies = ["anywidget"]
+dependencies = ["anywidget", "traitlets"]
 readme = "README.md"
+
+[project.optional-dependencies]
+dev = ["jupyter"]
 
 [tool.setuptools]
 packages  = ["pyjb"]
