@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
     build: {
-	outDir: "lgv_widget/static",
+	outDir: "pyjb/static",
 	lib: {
 	    entry: ["src/index.js"],
 	    filename: 'index',
