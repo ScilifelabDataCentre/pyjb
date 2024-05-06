@@ -1,12 +1,11 @@
 import {
-  createViewState,
-  JBrowseLinearGenomeView,
-} from '@jbrowse/react-linear-genome-view'
+    createViewState,
+    JBrowseLinearGenomeView,
+} from 'https://esm.sh/@jbrowse/react-linear-genome-view?bundle-deps'
 
-import { createElement } from 'react'
+import { createElement } from 'https://esm.sh/react'
 
-import { createRoot } from 'react-dom/client';
-
+import { createRoot } from 'https://esm.sh/react-dom/client';
 
 const assembly = {
   name: 'GRCh38',
