@@ -11,7 +11,8 @@ readme = "README.md"
 [project.optional-dependencies]
 dev = [
     "jupyter",
-    "watchfiles"
+    "watchfiles",
+    "pytest"
 ]
 
 [tool.setuptools]

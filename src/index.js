@@ -1,11 +1,11 @@
 import {
     createViewState,
     JBrowseLinearGenomeView,
-} from 'https://esm.sh/@jbrowse/react-linear-genome-view?bundle-deps'
+} from '@jbrowse/react-linear-genome-view';
 
-import { createElement } from 'https://esm.sh/react'
+import { createElement } from 'react';
 
-import { createRoot } from 'https://esm.sh/react-dom/client';
+import { createRoot } from 'react-dom/client';
 
 const defaultSession = {
     name: 'Default',
@@ -27,14 +27,16 @@ const defaultSession = {
     }
 };
 
-const hg38Aliases = 'https://s3.amazonaws.com/jbrowse.org/genomes/GRCh38/hg38_aliases.txt';
-
 
 // The following two functions could be shared with @jbrowse/cli: they
 // take a flat dictionary of options and return configuration objects.
 // In the case of @jbrowse/cli, arguments come from the command line,
 // and in pyjb context they come from the widget model.
-function assembly({uri, name, aliases, refNameAliases}) {
+async function assembly({sequence, name, faiLocation, gziLocation, refNameAliases, aliases}, resolver) {
+    const locations = [sequence, faiLocation, gziLocation, refNameAliases];
+    [sequence, faiLocation, gziLocation, refNameAliases] = await Promise.all(
+	locations.map(p => resolver.resolveUrl(p))
+    );
     return {
 	name,
 	sequence: {
@@ -42,13 +44,9 @@ function assembly({uri, name, aliases, refNameAliases}) {
 	    trackId: `${name}-ReferenceSequenceTrack`,
 	    adapter: {
 		type: 'BgzipFastaAdapter',
-		fastaLocation: {uri},
-		faiLocation: {
-		    uri: `${uri}.fai`,
-		},
-		gziLocation: {
-		    uri: `${uri}.gzi`,
-		},
+		fastaLocation: {uri: sequence},
+		faiLocation: {uri: faiLocation},
+		gziLocation: {uri: gziLocation},
 	    },
 	},
 	aliases,
@@ -81,17 +79,11 @@ async function render({model, el}) {
     console.log("Rendering linear genome view.");
     // Convert relative paths to URLs
     // See: https://ipywidgets.readthedocs.io/en/stable/examples/Widget%20Custom.html#passing-urls
-    const [trackUrl, asmUrl] = await Promise.all([
-	model.widget_manager.resolveUrl(model.get('track')),
-	model.widget_manager.resolveUrl(model.get('assembly'))
-    ]);
+    const asm = model.get('assembly');
+    const trackUrl = await model.widget_manager.resolveUrl(model.get('track'));
+
     const state = createViewState({
-	assembly: assembly({
-	    uri: asmUrl,
-	    name: "GRCh38",
-	    aliases: ["hg38"],
-	    refNameAliases: hg38Aliases
-	}),
+	assembly: await assembly(asm, model.widget_manager),
 	location: '10:29,838,758..29,838,798',
 	tracks: [
 	    track({
