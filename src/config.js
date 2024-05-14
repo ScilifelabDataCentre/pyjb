@@ -16,7 +16,7 @@ const URL_KEYS = new Set([
 
 
 function assembly({sequence, name, faiLocation, gziLocation, refNameAliases, aliases}) {
-    return {
+    const config = {
 	name,
 	sequence: {
 	    type: 'ReferenceSequenceTrack',
@@ -28,16 +28,19 @@ function assembly({sequence, name, faiLocation, gziLocation, refNameAliases, ali
 		gziLocation: {uri: gziLocation},
 	    },
 	},
-	aliases,
-	refNameAliases: {
+	aliases
+    }
+    if (refNameAliases !== null) {
+	config.refNameAliases = {
 	    adapter: {
 		type: 'RefNameAliasAdapter',
 		location: {
 		    uri: refNameAliases,
-		},
-	    },
-	},
-    }    
+		}
+	    }
+	}
+    }
+    return config
 }
 
 const GFF_TABIX_ADAPTER = "Gff3TabixAdapter",
@@ -48,7 +51,9 @@ function trackAdapter({adapterType, track, indexFile}) {
 	return {
 	    type: GFF_TABIX_ADAPTER,
 	    gffGzLocation: {uri: track},
-	    indexFile: {uri: indexFile}
+	    index: {
+		location: {uri: indexFile}
+	    }
 	}
     }
     if (adapterType == BED_ADAPTER) {
@@ -66,10 +71,10 @@ function featureTrack({track, name, assemblyNames, type, adapterType, indexFile}
 	name,
 	type,
 	assemblyNames,
-	trackId: name.toLowerCase(),
+	trackId: name.replace(/\s+/g, '-').toLowerCase(),
 	adapter: trackAdapter({adapterType, track, indexFile})
     }
 }
 
 
-export { featureTrack, assembly, trackAdapter }
+export { featureTrack, assembly, trackAdapter, URL_KEYS }

@@ -6,6 +6,8 @@ test("Generates correct adapter configuration", () => {
     expect(trackAdapter({adapterType, track, indexFile})).toEqual({
 	type: 'Gff3TabixAdapter',
 	gffGzLocation: {uri: "genomic.gff.gz"},
-	indexFile: {uri: "index.tbi"}
+	index: {
+	    location: {uri: "index.tbi"}
+	}
     });
 })

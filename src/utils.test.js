@@ -11,9 +11,9 @@ test("Returns object with promised values resolved", async () => {
 
 test("Returns object with URL values resolved", async () => {
     const keys = new Set(["uri", "url"]);
-    const obj = {"uri": "relative/path", "foo": 1}
+    const obj = {"uri": "relative/path", "foo": 1, "url": null}
     const resolveUrl = (path) => Promise.resolve("resolved/" + path)
     const res = await resolveUrlProperties(obj, resolveUrl, keys)
-    const exp = {"uri": "resolved/relative/path", "foo": 1}
+    const exp = {"uri": "resolved/relative/path", "foo": 1, "url": null}
     expect(res).toEqual(exp)
 })

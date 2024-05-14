@@ -17,7 +17,7 @@ async function promiseAllProperties(obj) {
 async function resolveUrlProperties(obj, resolveUrl, keys) {
     const urlPromises = {};
     for (const k in obj) {
-	if (keys.has(k)){
+	if (obj[k] !== null && keys.has(k)){
 	    urlPromises[k] = resolveUrl(obj[k]);
 	}
     }

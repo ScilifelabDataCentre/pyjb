@@ -15,12 +15,11 @@ async function render({model, el}) {
     const resolveUrl = model.widget_manager.resolveUrl.bind(model.widget_manager);
     const seq = await resolveUrlProperties(model.get('assembly'), resolveUrl, URL_KEYS);
     const tracks = await Promise.all(model.get('tracks').map(t => {
-	resolveUrlProperties(t, resolveUrl, URL_KEYS)
-    }))
-
+	return resolveUrlProperties(t, resolveUrl, URL_KEYS)
+    }));
     const state = createViewState({
 	assembly: assembly(seq),
-	location: '10:29,838,758..29,838,798',
+	location: model.get('location'),
 	tracks: tracks.map(featureTrack)
 
     });

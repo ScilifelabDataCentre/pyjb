@@ -26,9 +26,9 @@ class Fasta:
     sequence: str
     name: str
     type: str = "bgzipFasta"
+    ref_name_aliases: str | None = None
     fai_location: str | None = None
     gzi_location: str | None = None
-    ref_name_aliases: list = field(default_factory=list)
     aliases: list = field(default_factory=list)
 
     def __post_init__(self):
@@ -64,6 +64,7 @@ class Gff(BaseTrack):
 
 class LGVWidget(anywidget.AnyWidget):
     _esm = Path(__file__).parent / 'static' / 'index.mjs'
+    location = traitlets.Unicode().tag(sync=True)
     assembly = traitlets.Instance(Fasta).tag(
         sync=True,
         to_json=lambda dc, _: _to_json(dc)
