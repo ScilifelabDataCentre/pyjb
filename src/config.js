@@ -3,7 +3,7 @@ take a flat dictionary of options and return configuration objects.
 In the case of @jbrowse/cli, arguments come from the command line,
 and in pyjb context they come from the widget model. */
 
-const URL_KEYS = Set([
+const URL_KEYS = new Set([
     // Assemblies
     'sequence',
     'faiLocation',
@@ -68,3 +68,6 @@ function featureTrack({track, name, assemblyNames, type, adapterType, indexFile}
 	adapter: trackAdapter({adapterType, track, indexFile})
     }
 }
+
+
+export { featureTrack, assembly }
