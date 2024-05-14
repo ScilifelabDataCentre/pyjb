@@ -40,18 +40,20 @@ function assembly({sequence, name, faiLocation, gziLocation, refNameAliases, ali
     }    
 }
 
+const GFF_TABIX_ADAPTER = "Gff3TabixAdapter",
+      BED_ADAPTER = "BedAdapter";
 
 function trackAdapter({adapterType, track, indexFile}) {
-    if (adapterType == "Gff3TabixAdapter") {
+    if (adapterType == GFF_TABIX_ADAPTER) {
 	return {
-	    type: 'Gff3tabixadapter',
+	    type: GFF_TABIX_ADAPTER,
 	    gffGzLocation: {uri: track},
 	    indexFile: {uri: indexFile}
 	}
     }
-    if (adapterType == "BedAdapter") {
+    if (adapterType == BED_ADAPTER) {
 	return {
-	    type: 'BedAdapter',
+	    type: BED_ADAPTER,
 	    bedLocation: {uri: track}
 	}
     }
@@ -70,4 +72,4 @@ function featureTrack({track, name, assemblyNames, type, adapterType, indexFile}
 }
 
 
-export { featureTrack, assembly }
+export { featureTrack, assembly, trackAdapter }
