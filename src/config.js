@@ -1,10 +1,21 @@
-// The following two functions could be shared with @jbrowse/cli: they
-// take a flat dictionary of options and return configuration objects.
-// In the case of @jbrowse/cli, arguments come from the command line,
-// and in pyjb context they come from the widget model.
-async function assembly({sequence, name, faiLocation, gziLocation, refNameAliases, aliases}, resolveUrl) {
-    const locations = [sequence, faiLocation, gziLocation, refNameAliases];
-    [sequence, faiLocation, gziLocation, refNameAliases] = await Promise.all(locations.map(resolveUrl));
+/* The functions in this module could in principle be shared with @jbrowse/cli: they
+take a flat dictionary of options and return configuration objects.
+In the case of @jbrowse/cli, arguments come from the command line,
+and in pyjb context they come from the widget model. */
+
+const URL_KEYS = Set([
+    // Assemblies
+    'sequence',
+    'faiLocation',
+    'gziLocation',
+    'refNameAliases',
+    // Tracks
+    'track',
+    'indexFile'
+])
+
+
+function assembly({sequence, name, faiLocation, gziLocation, refNameAliases, aliases}) {
     return {
 	name,
 	sequence: {
@@ -48,8 +59,7 @@ function trackAdapter({adapterType, track, indexFile}) {
 }
 
 
-async function featureTrack({track, name, assemblyNames, type, adapterType, indexFile}, resolveUrl) {
-    const [track, indexFile] = await Promise.all([track, indexFile].map(resolveUrl));
+function featureTrack({track, name, assemblyNames, type, adapterType, indexFile}) {
     return {
 	name,
 	type,
