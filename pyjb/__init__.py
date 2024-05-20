@@ -1,3 +1,4 @@
+import os
 import anywidget
 import traitlets
 import re
@@ -60,10 +61,14 @@ class Gff(BaseTrack):
         if self.index_file is None:
             self.index_file = f"{self.track}.tbi"
 
-    
+
+if os.environ.get("PYJB_DEV", False):
+    _ESM = "http://localhost:5173/src/index.js?anywidget"
+else:
+    _ESM = Path(__file__).parent / 'static' / 'index.mjs'
 
 class LGVWidget(anywidget.AnyWidget):
-    _esm = Path(__file__).parent / 'static' / 'index.mjs'
+    _esm = _ESM
     location = traitlets.Unicode().tag(sync=True)
     assembly = traitlets.Instance(Fasta).tag(
         sync=True,

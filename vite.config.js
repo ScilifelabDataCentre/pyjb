@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import anywidget from "@anywidget/vite"
 
 export default defineConfig({
     build: {
@@ -10,7 +11,7 @@ export default defineConfig({
 	},
 	rollupOptions: {
 	    // ipywidget expects a self-contained ESM file, we cannot
-	    // rely relative imports.
+	    // rely on relative imports.
 	    output: {
 		manualChunks: () => 'vendor'
 	    }
@@ -20,5 +21,6 @@ export default defineConfig({
 	// Necessary to avoid failing accesses to `process.env` in the
 	// output bundle.
 	'process.env': {}
-    }
+    },
+    plugins: [anywidget()]
 });
