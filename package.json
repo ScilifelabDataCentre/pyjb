@@ -3,12 +3,13 @@
         "@anywidget/vite": "^0.1.2",
         "vite": "^5.2.10",
         "vite-plugin-node-polyfills": "^0.21.0",
+	"@vitejs/plugin-react": "^4.2.1",
         "vitest": "^1.6.0"
     },
     "scripts": {
         "test": "vitest",
         "build": "vite build",
-	"dev": "vite"
+        "dev": "vite"
     },
     "dependencies": {
         "@fontsource/roboto": "^5.0.13",

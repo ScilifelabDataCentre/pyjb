@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import anywidget from "@anywidget/vite"
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
     build: {
@@ -22,5 +23,5 @@ export default defineConfig({
 	// output bundle.
 	'process.env': {}
     },
-    plugins: [anywidget()]
+    plugins: [anywidget(), react()]
 });
