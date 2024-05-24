@@ -7,7 +7,6 @@ import { createRoot } from 'react-dom/client'
 import { assembly, featureTrack, URL_KEYS} from './config'
 import { resolveUrlProperties } from './utils'
 
-
 export async function render({model, el}) {
     console.log("Rendering linear genome view.");
     // Resolve relative paths to URLs
@@ -23,10 +22,13 @@ export async function render({model, el}) {
 	tracks: tracks.map(featureTrack)
 
     });
-    
     const root = createRoot(el);
     const lgv = createElement(JBrowseLinearGenomeView, {viewState: state});
     root.render(lgv);
+    return () => {
+	console.debug("[pyjb] Cleaning up JBrowseLineargenomeview component");
+	root.unmount();
+    }
 }
 
 
