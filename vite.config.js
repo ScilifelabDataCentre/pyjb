@@ -1,18 +1,19 @@
+import { resolve } from 'path'
 import { defineConfig } from "vite";
 import anywidget from "@anywidget/vite"
 import react from '@vitejs/plugin-react'
 
+
 export default defineConfig({
     build: {
-	outDir: "pyjb/static",
+	outDir: resolve(__dirname, "pyjb/static"),
 	lib: {
-	    entry: ["src/index.js"],
-	    filename: 'index',
+	    entry: resolve(__dirname, "src/index.js"),
+	    fileName: 'index',
 	    formats: ["es"],
 	},
 	rollupOptions: {
-	    // ipywidget expects a self-contained ESM file, we cannot
-	    // rely on relative imports.
+	    // ipywidget expects a self-contained ESM file
 	    output: {
 		manualChunks: () => 'vendor'
 	    }
@@ -21,7 +22,7 @@ export default defineConfig({
     define: {
 	// Necessary to avoid failing accesses to `process.env` in the
 	// output bundle.
-	'process.env': {}
+	'process.env.NODE_ENV': '"production"'
     },
     plugins: [anywidget(), react()]
 });
