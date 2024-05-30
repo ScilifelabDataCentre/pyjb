@@ -1,9 +1,6 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite';
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
-import anywidget from '@anywidget/vite'
-import react from '@vitejs/plugin-react'
-
+import { polyfillNode } from "esbuild-plugin-polyfill-node";
 
 export default defineConfig({
     build: {
@@ -25,20 +22,10 @@ export default defineConfig({
 	// output bundle.
 	'process.env.NODE_ENV': '"production"'
     },
-    plugins: [
-	anywidget(),
-	react(),
-    ],
+    plugins: [],
     optimizeDeps: {
 	esbuildOptions: {
-	    define: {
-		global: 'globalThis'
-	    },
-	    plugins: [
-		NodeGlobalsPolyfillPlugin({
-		    buffer: true,
-		    global: true
-		})]
+	    plugins: [polyfillNode()]
 	}
     }
 
