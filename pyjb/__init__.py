@@ -63,7 +63,7 @@ class Gff(BaseTrack):
 
 
 if os.environ.get("PYJB_DEV", False):
-    _ESM = "http://localhost:5173/src/index.js?anywidget"
+    _ESM = "http://localhost:5173/src/index.js"
 else:
     _ESM = Path(__file__).parent / 'static' / 'index.mjs'
 
