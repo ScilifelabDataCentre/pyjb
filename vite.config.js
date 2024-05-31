@@ -1,6 +1,7 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite';
 import { polyfillNode } from "esbuild-plugin-polyfill-node";
+import hmrPlugin from './src/vite/hmrPlugin.js'
 
 export default defineConfig({
     build: {
@@ -22,7 +23,7 @@ export default defineConfig({
 	// output bundle.
 	'process.env.NODE_ENV': '"production"'
     },
-    plugins: [],
+    plugins: [hmrPlugin()],
     optimizeDeps: {
 	esbuildOptions: {
 	    plugins: [polyfillNode()]
