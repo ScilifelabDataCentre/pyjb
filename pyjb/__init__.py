@@ -34,7 +34,7 @@ class Fasta:
 
     def __post_init__(self):
         if self.fai_location is None:
-            self.fai_location = f"{self.sequence}.fai" 
+            self.fai_location = f"{self.sequence}.fai"
         if self.gzi_location is None:
             self.gzi_location = f"{self.sequence}.gzi"
 
@@ -57,9 +57,28 @@ class Gff(BaseTrack):
     def __post_init__(self, assembly):
 
         self.assembly_names = [assembly.name]
-        
+
         if self.index_file is None:
             self.index_file = f"{self.track}.tbi"
+
+
+@dataclass
+class Bam(BaseTrack):
+    track: str
+    name: str
+    assembly: InitVar[Fasta]
+    assembly_names: list = field(default_factory=list, init=False)
+    type: str = "AlignmentsTrack"
+    adapter_type: str = field(default="BamAdapter")
+    index_type: str = field(default="BAI")
+    index_file: str = None
+
+    def __post_init__(self, assembly):
+
+        self.assembly_names = [assembly.name]
+
+        if self.index_file is None:
+            self.index_file = f"{self.track}.bai"
 
 
 if os.environ.get("PYJB_DEV", False):
@@ -78,4 +97,3 @@ class LGVWidget(anywidget.AnyWidget):
         sync=True,
         to_json=lambda tl, _: map(_to_json, tl)
     )
-

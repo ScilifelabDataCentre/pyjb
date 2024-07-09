@@ -44,7 +44,8 @@ function assembly({sequence, name, faiLocation, gziLocation, refNameAliases, ali
 }
 
 const GFF_TABIX_ADAPTER = "Gff3TabixAdapter",
-      BED_ADAPTER = "BedAdapter";
+      BED_ADAPTER = "BedAdapter",
+      BAM_ADAPTER = "BamAdapter";
 
 function trackAdapter({adapterType, track, indexFile}) {
     if (adapterType == GFF_TABIX_ADAPTER) {
@@ -62,8 +63,20 @@ function trackAdapter({adapterType, track, indexFile}) {
 	    bedLocation: {uri: track}
 	}
     }
+    if (adapterType == BAM_ADAPTER) {
+	return {
+	    type: BAM_ADAPTER,
+	    bamLocation: {uri: track},
+	    index: {
+		indexType: "CSI",
+		location: {uri: indexFile}
+	    }
+	}
+    }
     throw new Error(`Unsupported adapter type: ${adapterType}`)
 }
+
+
 
 
 function featureTrack({track, name, assemblyNames, type, adapterType, indexFile}) {
