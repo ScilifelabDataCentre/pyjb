@@ -7,7 +7,7 @@ import { createRoot } from 'react-dom/client'
 import { assembly, featureTrack, URL_KEYS} from './config'
 import { resolveUrlProperties } from './utils'
 
-export async function render({model, el}) {
+async function render({model, el}) {
     console.log("Rendering linear genome view.");
     // Resolve relative paths to URLs
     // See: https://ipywidgets.readthedocs.io/en/stable/examples/Widget%20Custom.html#passing-urls
