@@ -47,7 +47,7 @@ const GFF_TABIX_ADAPTER = "Gff3TabixAdapter",
       BED_ADAPTER = "BedAdapter",
       BAM_ADAPTER = "BamAdapter";
 
-function trackAdapter({adapterType, track, indexFile}) {
+function trackAdapter({adapterType, track, indexFile, indexType}) {
     if (adapterType == GFF_TABIX_ADAPTER) {
 	return {
 	    type: GFF_TABIX_ADAPTER,
@@ -68,7 +68,7 @@ function trackAdapter({adapterType, track, indexFile}) {
 	    type: BAM_ADAPTER,
 	    bamLocation: {uri: track},
 	    index: {
-		indexType: "CSI",
+		indexType,
 		location: {uri: indexFile}
 	    }
 	}
@@ -79,13 +79,13 @@ function trackAdapter({adapterType, track, indexFile}) {
 
 
 
-function featureTrack({track, name, assemblyNames, type, adapterType, indexFile}) {
+function featureTrack({track, name, assemblyNames, type, adapterType, indexFile, indexType}) {
     return {
 	name,
 	type,
 	assemblyNames,
 	trackId: name.replace(/\s+/g, '-').toLowerCase(),
-	adapter: trackAdapter({adapterType, track, indexFile})
+	adapter: trackAdapter({adapterType, track, indexFile, indexType})
     }
 }
 
