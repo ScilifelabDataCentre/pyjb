@@ -39,61 +39,53 @@ class Fasta:
             self.gzi_location = f"{self.sequence}.gzi"
 
 
+@dataclass
 class BaseTrack:
-    pass
+    track: str
+    name: str
+    assembly: InitVar[Fasta]
+    assembly_names: list[str] = field(default_factory=list, init=False)
+    index_file: str = None
+
+    def __post_init__(self, assembly):
+        self.assembly_names = [assembly.name]
 
 
 @dataclass
 class Gff(BaseTrack):
-    track: str
-    name: str
-    assembly: InitVar[Fasta]
-    assembly_names: list = field(default_factory=list, init=False)
     type: str = field(default="FeatureTrack", init=False)
-    adapter_type: str = field(default="Gff3TabixAdapter")
-    index_file: str = None
-
+    adapter_type: str = "Gff3TabixAdapter"
 
     def __post_init__(self, assembly):
-
-        self.assembly_names = [assembly.name]
-
+        super().__post_init__(assembly)
         if self.index_file is None:
             self.index_file = f"{self.track}.tbi"
 
 
 @dataclass
 class Bam(BaseTrack):
-    track: str
-    name: str
-    assembly: InitVar[Fasta]
-    assembly_names: list = field(default_factory=list, init=False)
-    type: str = "AlignmentsTrack"
-    adapter_type: str = field(default="BamAdapter")
-    index_type: str = field(default="BAI")
-    index_file: str = None
+    type: str = field(default="AlignmentsTrack", init=False)
+    adapter_type: str = "BamAdapter"
+    index_type: str = "BAI"
 
     def __post_init__(self, assembly):
-
-        self.assembly_names = [assembly.name]
-
+        super().__post_init__(assembly)
         if self.index_file is None:
-            self.index_file = f"{self.track}.bai"
+            self.index_file = f"{self.track}.{self.index_type.lower()}"
 
 
 if os.environ.get("PYJB_DEV", False):
     _ESM = "http://localhost:5173/src/index.js?anywidget"
 else:
-    _ESM = Path(__file__).parent / 'static' / 'index.mjs'
+    _ESM = Path(__file__).parent / "static" / "index.mjs"
+
 
 class LGVWidget(anywidget.AnyWidget):
     _esm = _ESM
     location = traitlets.Unicode().tag(sync=True)
     assembly = traitlets.Instance(Fasta).tag(
-        sync=True,
-        to_json=lambda dc, _: _to_json(dc)
+        sync=True, to_json=lambda dc, _: _to_json(dc)
     )
     tracks = traitlets.List(traitlets.Instance(BaseTrack)).tag(
-        sync=True,
-        to_json=lambda tl, _: map(_to_json, tl)
+        sync=True, to_json=lambda tl, _: map(_to_json, tl)
     )
