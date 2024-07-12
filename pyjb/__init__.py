@@ -77,7 +77,7 @@ class Bam(BaseTrack):
 if os.environ.get("PYJB_DEV", False):
     _ESM = "http://localhost:5173/src/index.js?anywidget"
 else:
-    _ESM = Path(__file__).parent / "static" / "index.mjs"
+    _ESM = Path(__file__).parent / "static" / "index.js"
 
 
 class LGVWidget(anywidget.AnyWidget):
